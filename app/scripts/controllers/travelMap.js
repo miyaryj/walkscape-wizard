@@ -7,59 +7,7 @@ angular.module('Walkscape')
 		$http.get('data/' + $scope.title + '.json').success(function(data) {
 			$scope.travel = new Travel(data);
 		});
-
-		// var mapView = new MapView();
-		// mapView.initialize();
-
-		// $http.get('data/' + $routeParams.travel + '.json').success(function(data) {
-		// 	var travel = new Travel();
-		// 	travel.setTracks(data);
-		// 	mapView.setTravel(travel);
-		// });
 	});
-
-function MapView() {
-	this.map;
-	this.travel;
-	this.track;
-
-	this.initialize = function() {
-		var mapOptions = {
-			center: new google.maps.LatLng(-34.397, 150.644),
-			zoom: 20,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		this.map = new google.maps.Map(document.getElementById("map_canvas"),
-			mapOptions);
-
-		var marker = new google.maps.Marker({
-			position: new google.maps.LatLng(-34.397, 150.644),
-			map: this.map,
-			title: 'Hello!'
-		});
-	};
-
-	this.setTravel = function(travel) {
-		this.travel = travel;
-
-		var polyOptions = {
-			strokeColor: '#00AAFF',
-			strokeOpacity: 1.0,
-			strokeWeight: 5
-		};
-
-		this.track = new google.maps.Polyline(polyOptions);
-		this.track.setMap(this.map);
-		var path = this.track.getPath();
-
-		this.map.panToBounds(this.travel.getTrackBounds());
-		var tracks = this.travel.getTracks();
-		for (var i = 0; i < tracks.length; i++) {
-			var trackPoint = tracks[i];
-			path.push(new google.maps.LatLng(trackPoint.lat, trackPoint.lng));
-		}
-	};
-}
 
 function TrackPoint(latLng, time, duration) {
 	this.latLng = latLng;
