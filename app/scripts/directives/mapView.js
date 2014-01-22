@@ -10,6 +10,10 @@ angular.module('Walkscape.directives', [])
         scope.$watch('travel', function(travel) {
           mapView.setTravel(travel);
         });
+
+        scope.$watch('index', function(index) {
+          mapView.moveTo(index);
+        });
       }
     };
   });
@@ -33,6 +37,8 @@ function MapView(element) {
     if(travel === undefined) {
       return;
     }
+
+    this.travel = travel;
     var bounds = travel.getTrackBounds();
     var sw = new google.maps.LatLng(bounds.south, bounds.west);
     var ne = new google.maps.LatLng(bounds.north, bounds.east);
@@ -53,6 +59,16 @@ function MapView(element) {
   };
 
   this.moveTo = function(index) {
+    if(this.travel == undefined) {
+      return;
+    }
+
+    var tracks = this.travel.getTracks();
+    if(index < 0 || index > tracks.length) {
+      console.log('index is ' + index);
+      return;
+    }
+
     var position = new google.maps.LatLng(tracks[index].lat, tracks[index].lng);
     this.marker.setPosition(position);
   };

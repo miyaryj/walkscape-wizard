@@ -3,6 +3,24 @@
 angular.module('Walkscape')
 	.controller('TravelMapCtrl', function($scope, $routeParams, $http) {
 		$scope.title = $routeParams.travel;
+		$scope.index = 0;
+
+		$scope.proceed = function() {
+			if($scope.travel == undefined) {
+				return;
+			}
+			if($scope.index >= $scope.travel.getTracks().length - 1) {
+				return;
+			}
+			$scope.index = $scope.index + 1;
+		};
+
+		$scope.back = function() {
+			if($scope.index <= 0) {
+				return;
+			}
+			$scope.index = $scope.index - 1;
+		};
 
 		$http.get('data/' + $scope.title + '.json').success(function(data) {
 			$scope.travel = new Travel(data);
