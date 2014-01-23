@@ -18,6 +18,8 @@ angular.module('Walkscape', ['Walkscape.directives'])
     }
   ]);
 
+angular.module('Walkscape.directives', []);
+
 angular.module('Walkscape')
   .value('travel', {
     'lat':0,

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('Walkscape.directives', [])
+angular.module('Walkscape.directives')
   .directive('mapView', function() {
     return {
       restrict: 'A',
@@ -12,7 +12,7 @@ angular.module('Walkscape.directives', [])
         });
 
         scope.$watch('index', function(index) {
-          mapView.moveTo(index);
+          var time = mapView.moveTo(index);
         });
       }
     };
@@ -34,7 +34,7 @@ function MapView(element) {
   this.map = new google.maps.Map(element, MAP_OPTIONS);
 
   this.setTravel = function(travel) {
-    if(travel === undefined) {
+    if (travel === undefined) {
       return;
     }
 
@@ -55,22 +55,24 @@ function MapView(element) {
     }
 
     var position = new google.maps.LatLng(tracks[0].lat, tracks[0].lng);
-    this.marker = new Marker(this.map, position)
+    this.marker = new Marker(this.map, position);
   };
 
   this.moveTo = function(index) {
-    if(this.travel == undefined) {
+    if (this.travel === undefined) {
       return;
     }
 
     var tracks = this.travel.getTracks();
-    if(index < 0 || index > tracks.length) {
+    if (index < 0 || index > tracks.length) {
       console.log('index is ' + index);
       return;
     }
 
     var position = new google.maps.LatLng(tracks[index].lat, tracks[index].lng);
     this.marker.setPosition(position);
+
+    return tracks[index].time;
   };
 }
 
@@ -78,7 +80,7 @@ function Marker(map, position) {
   this.marker = new google.maps.Marker({
     position: position,
     map: map,
-    title:'Hello World!'
+    title: 'Hello World!'
   });
 
   this.setPosition = function(position) {
