@@ -4,8 +4,20 @@ angular.module('Walkscape')
 	.controller('TravelMapCtrl', function($scope, $routeParams, $http) {
 		$scope.title = $routeParams.travel;
 		$scope.index = 0;
+		$scope.isPlaying = false;
+
+		$scope.start = function() {
+			if($scope.travel == undefined) {
+				return;
+			}
+			if($scope.index >= $scope.travel.getTracks().length - 1) {
+				return;
+			}
+			$scope.isPlaying = !$scope.isPlaying;
+		}
 
 		$scope.proceed = function() {
+			console.log('proceed: ' + $scope.index);
 			if($scope.travel == undefined) {
 				return;
 			}
